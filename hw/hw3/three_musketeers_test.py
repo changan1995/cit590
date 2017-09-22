@@ -29,7 +29,7 @@ class TestThreeMusketeers(unittest.TestCase):
         self.assertEqual(at((1, 3)), 'M')
 
     def test_get_board(self):
-        self.assertEqual([ [_, _, _, M, _]
+        self.assertEqual([ [_, _, _, M, _],
                            [_, _, R, M, _],
                            [_, R, M, R, _],
                            [_, R, _, _, _],
@@ -37,19 +37,24 @@ class TestThreeMusketeers(unittest.TestCase):
                          get_board())
 
     def test_string_to_location(self):
-        self.fail() # Replace with tests
+        #self.fail() # Replace with tests
+        self.assertEqual(string_to_location('B4'),(1,3))
 
     def test_location_to_string(self):
-        self.fail() # Replace with tests
+        #self.fail() # Replace with tests
+        self.assertEqual(location_to_string((2,3),'C4'))
 
     def test_at(self):
-        self.fail() # Replace with tests
-
+        #self.fail() # Replace with tests
+        self.assertEqual(at((0,4),board[0][4])
+       
     def test_all_locations(self):
-        self.fail() # Replace with tests
+        #self.fail() # Replace with tests
+        self.assertEqual(all_locations(),[(0,0),(0,1),(0,2),(0,4),(1,0),(1,1),(1,2),(1,3),(1,4),(2,0),(2,1),(2,2),(2,3),(2,4),(3,0),\
+        (3,1),(3,2),(3,3),(3,4),(4,0),(4,1),(4,2),(4,3),(4,4)])
 
     def test_adjacent_location(self):
-        self.fail() # Replace with tests
+        self.assertEqual(adjacent_location((0,3),"up"),) # Replace with tests
         
     def test_is_legal_move_by_musketeer(self):
         self.fail() # Replace with tests

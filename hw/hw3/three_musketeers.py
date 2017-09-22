@@ -40,13 +40,16 @@ def string_to_location(s):
        location as a 2-tuple (such as (0, 4))."""
     assert s[0] >= 'A' and s[0] <= 'E'
     assert s[1] >= '1' and s[1] <= '5'
-    pass # Replace with code
-
+    #pass # Replace with code
+    return (int((ord(s[0])-65)),int((s[1]-1)))
+    
 def location_to_string(location):
     """Returns the string representation of a location."""
     assert location[0] >= 0 and location[0] <= 4
     assert location[1] >= 0 and location[1] <= 4
-    pass # Replace with code
+    #pass # Replace with code
+    return chr(location[0]+65)+str(location[1]+1)
+    #test chr(0+65)+str(4+1)
 
 def at(location):
     """Returns the contents of the board at the given location."""
@@ -54,25 +57,56 @@ def at(location):
 
 def all_locations():
     """Returns a list of all 25 locations on the board."""
-    pass # Replace with code
+    #pass # Replace with code
+    all_loc=[]
+    for i in board:
+        for j in board[i]:
+            all_loc.append((i,j))
+    return all_loc
+            
 
 def adjacent_location(location, direction):
     """Return the location next to the given one, in the given direction.
        Does not check if the location returned is legal on a 5x5 board."""
     (row, column) = location
-    pass # Replace with code
+    if direction == "up" :
+        column+=1
+    if direction == "left" :
+        row-=1 
+    if direction == "down" :
+        column -=1
+    if direction == "right" :
+        column +=1
+    return  (row,column)
+    #pass # Replace with code
+
 
 def is_legal_move_by_musketeer(location, direction):
     """Tests if the Musketeer at the location can move in the direction."""
-    assert at(location) == 'M'
-    pass # Replace with code
+    new_location=adjacent_location(location,direction)
+    if not(is_legal_move(location,direction)):
+        return False
+    if at(new_location)=="R":
+        return True
+    else:
+        return False
+    #pass # Replace with code
 
 def is_legal_move_by_enemy(location, direction):
     """Tests if the enemy at the location can move in the direction."""
     assert at(location) == 'R'
+    #test is in the board?
+    if is_legal_move(location,direction):
+        if at(adjacent_location(location,direction)) == '-' :
+            return True
+        else:
+            return False
+    else:
+        return False
     pass # Replace with code
 
 def is_legal_move(location, direction):
+    return(is_legal_location(adjacent_location(location,direction)))
     """Tests whether it is legal to move the piece at the location
     in the given direction."""
     pass # Replace with code
@@ -81,7 +115,17 @@ def has_some_legal_move_somewhere(who):
     """Tests whether a legal move exists for player "who" (which must
     be either 'M' or 'R'). Does not provide any information on where
     the legal move is."""
-    pass # Replace with code
+    all_loc = all_locations()
+    for i in range(len(all_loc)):
+        for key,value in directions.items():
+            if at(all_loc[i]) == 'M' and who == 'M':    
+                if is_legal_move_by_musketeer(all_loc[i],value):
+                    return True 
+            elif at(all_loc[i]) == 'R' and who == "R":
+                if is_legal_move_by_enemy(all_loc[i],value):
+                    return True
+    return False
+    #pass # Replace with code
 
 def possible_moves_from(location):
     """Returns a list of directions ('left', etc.) in which it is legal
@@ -95,8 +139,13 @@ def can_move_piece_at(location):
 
 def is_legal_location(location):
     """Tests if the location is legal on a 5x5 board."""
-    pass # Replace with code
-    
+    #pass # Replace with code
+    if location[0] >4 or location[0]<0:
+        return False
+    if location[1] >4 or location[1]<0:
+        return False
+    return True
+
 def is_within_board(location, direction):
     """Tests if the move stays within the boundaries of the board."""
     pass # Replace with code
@@ -118,7 +167,8 @@ def choose_computer_move(who):
 
 def is_enemy_win():
     """Returns True if all 3 Musketeers are in the same row or column."""
-    pass # Replace with code
+    #pass # Replace with code
+    
 
 #---------- Communicating with the user ----------
 
