@@ -216,20 +216,24 @@ def choose_computer_move(who):
     temp_move_collective=all_possible_moves_for(who)
     temp_move=temp_move_collective[0]
     #compute the m position average
-    for i in m_position:
-        average_col += m_position[i][0]
-        average_row += m_position[i][1]
+    avg_row=0
+    avg_col=0
+    for i in range(len(m_position())):
+        avg_col += m_position()[i][0]
+        avg_row += m_position()[i][1]
     avg_col/=3
     avg_row/=3
 
     if who == 'M':
         for i in range(len(temp_move_collective)):
-            if value(adjacent_location(temp_move_collective[i]),avg_col,avg_row)>value(adjacent_location(temp_move),avg_col,avg_row):
+            if value(adjacent_location(temp_move_collective[i][0],temp_move_collective[i][1]),avg_col,avg_row)\
+            >value(adjacent_location(temp_move[0],temp_move[1]),avg_col,avg_row):
                 temp_move= temp_move_collective[i]
     
     if who == 'R':
         for i in range(len(temp_move_collective)):
-            if value(adjacent_location(temp_move_collective[i]),avg_col,avg_row)<value(adjacent_location(temp_move),avg_col,avg_row):
+            if value(adjacent_location(temp_move_collective[i][0],temp_move_collective[i][1]),avg_col,avg_row)\
+            <value(adjacent_location(temp_move[0],temp_move[1]),avg_col,avg_row):
                 temp_move= temp_move_collective[i]
     return temp_move
         

@@ -139,7 +139,9 @@ class TestThreeMusketeers(unittest.TestCase):
         #self.fail() # Replace with tests
         
     def test_choose_computer_move(self):
-        self.fail() # Replace with tests; should work for both 'M' and 'R'
+        self.assertTrue(choose_computer_move('M') in all_possible_moves_for('M'))
+        self.assertTrue(choose_computer_move('R') in all_possible_moves_for('R'))
+        #self.fail() # Replace with tests; should work for both 'M' and 'R'
 
     def test_is_enemy_win(self):
         self.assertFalse(is_enemy_win())
