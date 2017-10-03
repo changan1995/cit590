@@ -1,3 +1,7 @@
+#Quankang Wang,CIT590 HW3
+#finished all by myself
+#UID:54162826.
+
 import unittest
 from three_musketeers import *
 
@@ -67,7 +71,7 @@ class TestThreeMusketeers(unittest.TestCase):
         #self.fail() # Replace with tests
 
     def test_is_legal_move(self):
-        self.assertTrue(is_legal_move((0,3),right))
+        self.assertTrue(is_legal_move((1,3),left))
         self.assertFalse(is_legal_move((0,3),up))
         #self.fail() # Replace with tests
         
@@ -138,12 +142,27 @@ class TestThreeMusketeers(unittest.TestCase):
         self.assertEqual(at((1,4)),_)        
         #self.fail() # Replace with tests
         
+    def test_value(self):
+        self.assertEqual(value((1,3),3,3),(2,0))
+
     def test_choose_computer_move(self):
         self.assertTrue(choose_computer_move('M') in all_possible_moves_for('M'))
         self.assertTrue(choose_computer_move('R') in all_possible_moves_for('R'))
         #self.fail() # Replace with tests; should work for both 'M' and 'R'
 
+    def test_m_position(self):
+        self.assertEqual(m_position(),[(0,3),(1,3),(2,2)])
+
+    def test_samerow(self):
+        self.assertTrue(samerow((1,4),(1,3)))
+        self.assertFalse(samerow((1,4),(2,3)))
+
     def test_is_enemy_win(self):
+        set_board([ [_, _, _, _, M],
+                    [_, _, R, _, _],
+                    [_, R, _, R, _],
+                    [_, R, _, _, _],
+                    [M, _, _, _, M] ])
         self.assertFalse(is_enemy_win())
         set_board([ [_, _, R, M, R],
                     [_, _, _, M, _],

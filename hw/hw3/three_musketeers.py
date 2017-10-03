@@ -1,3 +1,7 @@
+#Quankang Wang,CIT590 HW3
+#finished all by myself
+#UID:54162826.
+
 # The Three Musketeers Game
 
 # In all methods,
@@ -40,14 +44,14 @@ def string_to_location(s):
        location as a 2-tuple (such as (0, 4))."""
     assert s[0] >= 'A' and s[0] <= 'E'
     assert s[1] >= '1' and s[1] <= '5'
-    #pass # Replace with code
-    return (int(ord(s[0])-65),int(s[1])-1)
-    
+    #transfer through ascii code
+    return (int(ord(s[0])-65), int(s[1])-1)
+
 def location_to_string(location):
     """Returns the string representation of a location."""
     assert location[0] >= 0 and location[0] <= 4
     assert location[1] >= 0 and location[1] <= 4
-    #pass # Replace with code
+    #transfer through ascii code
     return chr(location[0]+65)+str(location[1]+1)
     #test chr(0+65)+str(4+1)
 
@@ -57,81 +61,84 @@ def at(location):
 
 def all_locations():
     """Returns a list of all 25 locations on the board."""
-    #pass # Replace with code
-    all_loc=[]
-    c=0
-    d=0
+    #go through every position available
+    all_loc = []
+    c = 0
+    d = 0
     for i in range(len(board)):
         for j in range(len(board[i])):
-            all_loc.append((i,j))
+            all_loc.append((i, j))
     return all_loc
-            
 
 def adjacent_location(location, direction):
     """Return the location next to the given one, in the given direction.
        Does not check if the location returned is legal on a 5x5 board."""
+    #move the location
     column = location[0]
     row = location[1]
-    if direction == "up" :
+    if direction == "up":
         column -= 1
-    elif direction == "left" :
-        row -= 1 
-    elif direction == "down" :
+    elif direction == "left":
+        row -= 1
+    elif direction == "down":
         column += 1
-    elif direction == "right" :
+    elif direction == "right":
         row += 1
-    return  (column,row)
-    #pass # Replace with code
+    return (column, row)
 
 def is_legal_move_by_musketeer(location, direction):
     """Tests if the Musketeer at the location can move in the direction."""
-    new_location=adjacent_location(location,direction)
-    if not(is_legal_move(location,direction)):
+    new_location = adjacent_location(location, direction)
+    if not is_within_board(location, direction):
         return False
-    if at(new_location)=="R":
+    if at(new_location) == "R":
         return True
     else:
         return False
-    #pass # Replace with code
 
 def is_legal_move_by_enemy(location, direction):
     """Tests if the enemy at the location can move in the direction."""
     assert at(location) == 'R'
-    #test is in the board?
-    if is_legal_move(location,direction):
-        if at(adjacent_location(location,direction)) == '-' :
+    #test whether the enemy can move
+    if is_within_board(location, direction):
+        if at(adjacent_location(location, direction)) == '-':
             return True
         else:
             return False
     else:
         return False
-    #pass # Replace with code
 
 def is_legal_move(location, direction):
-    return(is_legal_location(adjacent_location(location,direction)))
+    if at(location) == 'M':
+        return is_legal_move_by_musketeer(location, direction)
+    if at(location) == 'R':
+        return is_legal_move_by_enemy(location, direction)
+
     """Tests whether it is legal to move the piece at the location
     in the given direction."""
-    pass # Replace with code
 
 def has_some_legal_move_somewhere(who):
     """Tests whether a legal move exists for player "who" (which must
     be either 'M' or 'R'). Does not provide any information on where
     the legal move is."""
+    #test whether the opponent has move to do
+    #global directions
+    directions = {'L':'left', 'R':'right', 'U':'up', 'D':'down'}
     all_loc = all_locations()
-    for i in range(len(all_loc)):
+    for i in range(len(all_locations())):
         for key,value in directions.items():
-            if at(all_loc[i]) == 'M' and who == 'M':    
+            if at(all_loc[i]) == 'M' and who == 'M':
                 if is_legal_move_by_musketeer(all_loc[i],value):
-                    return True 
+                    return True
             elif at(all_loc[i]) == 'R' and who == "R":
                 if is_legal_move_by_enemy(all_loc[i],value):
                     return True
+            #return is_legal_move()
     return False
-    #pass # Replace with code
 
 def possible_moves_from(location):
-    possible_move=[]
-    global directions
+    possible_move = []
+    #global directions
     directions = {'L':'left', 'R':'right', 'U':'up', 'D':'down'}
     if at(location) == '-':
         return possible_move
@@ -148,7 +155,6 @@ def possible_moves_from(location):
     """Returns a list of directions ('left', etc.) in which it is legal
        for the player at location to move. If there is no player at
        location, returns the empty list, []."""
-    pass # Replace with code
 
 def can_move_piece_at(location):
     if at(location) == '-':
@@ -158,11 +164,9 @@ def can_move_piece_at(location):
     else:
         return True
     """Tests whether the player at the location has at least one move available."""
-    #pass # Replace with code
 
 def is_legal_location(location):
     """Tests if the location is legal on a 5x5 board."""
-    #pass # Replace with code
     if not(location[0] in [0, 1, 2, 3, 4]) or not(location[1] in [0, 1, 2, 3, 4]):
         return False
     return True
@@ -173,29 +177,27 @@ def is_within_board(location, direction):
         return True
     else:
         return False
-    #pass # Replace with code
-    
+
 def all_possible_moves_for(player):
+    #global directions
     directions = {'L':'left', 'R':'right', 'U':'up', 'D':'down'}
     all_loc = all_locations()
     possible_move_m=[]
     possible_move_r=[]
     for i in range(len(all_loc)):
         for key,value in directions.items():
-            if at(all_loc[i]) == 'M' and player == 'M':    
+            if at(all_loc[i]) == 'M' and player == 'M':
                 if is_legal_move_by_musketeer(all_loc[i],value):
                     possible_move_m.append((all_loc[i],value))
             if at(all_loc[i]) == 'R' and player =='R':
                 if is_legal_move_by_enemy(all_loc[i],value):
                     possible_move_r.append((all_loc[i],value))
-    
     if player == 'M':
         return possible_move_m
     elif player == 'R':
         return possible_move_r
     """Returns every possible move for the player ('M' or 'R') as a list
        (location, direction) tuples."""
-    pass # Replace with code
 
 def make_move(location, direction):
     new_location = adjacent_location(location,direction)
@@ -203,7 +205,6 @@ def make_move(location, direction):
     board[location[0]][location[1]]='-'
     return
     """Moves the piece in location in the indicated direction."""
-    pass # Replace with code
 
 #used for computing the strategy for m and r.
 #basiclly calculate the smallist vertical distance between the 
@@ -213,24 +214,25 @@ def value(location,avg_col,avg_row):
     return(dis_col,dis_row)
 
 def choose_computer_move(who):
-    temp_move_collective=all_possible_moves_for(who)
-    temp_move=temp_move_collective[0]
+#initial a possible move for the player
+#selected from possible_moves_for(who)
+    temp_move_collective = all_possible_moves_for(who)
+    temp_move = temp_move_collective[0]
     #compute the m position average
-    avg_row=0
-    avg_col=0
+    avg_row = 0
+    avg_col = 0
     for i in range(len(m_position())):
         avg_col += m_position()[i][0]
         avg_row += m_position()[i][1]
-    avg_col/=3
-    avg_row/=3
-
-    if who == 'M':
-        for i in range(len(temp_move_collective)):
+    avg_col /= 3
+    avg_row /= 3
+#if a more valueable move is founded replace the temp_move
+    if who == 'M':#for m situation
+        for i in range(len(temp_move_collective)):#compare between two position
             if value(adjacent_location(temp_move_collective[i][0],temp_move_collective[i][1]),avg_col,avg_row)\
             >value(adjacent_location(temp_move[0],temp_move[1]),avg_col,avg_row):
                 temp_move= temp_move_collective[i]
-    
-    if who == 'R':
+    if who == 'R':#for r situation
         for i in range(len(temp_move_collective)):
             if value(adjacent_location(temp_move_collective[i][0],temp_move_collective[i][1]),avg_col,avg_row)\
             <value(adjacent_location(temp_move[0],temp_move[1]),avg_col,avg_row):
@@ -240,17 +242,18 @@ def choose_computer_move(who):
     """The computer chooses a move for a Musketeer (who = 'M') or an
        enemy (who = 'R') and returns it as the tuple (location, direction),
        where a location is a (row, column) tuple as usual."""
-    pass # Replace with code
+       
 
 def m_position():
+#find all the position for m to save time in computing enemy win
     m_position=[]
-    for i in range(len(all_locations())) :
-        for key,value in directions.items():
-            if at(all_locations()[i]) == 'M':
-                m_position.append(all_locations()[i])
+    for i in range(len(all_locations())):
+        if at(all_locations()[i]) == 'M':
+            m_position.append(all_locations()[i])
     return m_position
 
 def samerow(location1,location2):
+#compare whether has two location a same row/column
     if location1[0] == location2[0]:
         return True
     if location1[1] == location2[1]:
@@ -258,6 +261,7 @@ def samerow(location1,location2):
     return False
 
 def is_enemy_win():
+#go through every two pair,whether there is a single pair is no same row/position
     for i in range(len(m_position())):
         for j in range(len(m_position())):
             if not(samerow(m_position()[i],m_position()[j])):
@@ -265,7 +269,7 @@ def is_enemy_win():
     return True
                  
     """Returns True if all 3 Musketeers are in the same row or column."""
-    #pass # Replace with code
+          
     
 
 #---------- Communicating with the user ----------
@@ -362,6 +366,9 @@ def describe_move(who, location, direction):
           location_to_string(new_location) + ".\n")
 
 def start():
+    #global directions
+    directions = {'L':'left', 'R':'right', 'U':'up', 'D':'down'}
+
     """Plays the Three Musketeers Game."""
     users_side = choose_users_side()
     board = create_board()
@@ -384,5 +391,6 @@ def start():
             print("The Musketeers win!")
             break        
 
+#main entrance
 if __name__ == '__main__':
     start()
